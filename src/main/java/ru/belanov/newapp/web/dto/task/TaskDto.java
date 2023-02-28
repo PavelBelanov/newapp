@@ -2,7 +2,6 @@ package ru.belanov.newapp.web.dto.task;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +11,6 @@ import ru.belanov.newapp.web.dto.validation.OnUpdate;
 
 import java.time.LocalDateTime;
 @Data
-@Builder
 public class TaskDto {
     @NotNull(message = "id must be not empty", groups = OnUpdate.class)
     private Long id;

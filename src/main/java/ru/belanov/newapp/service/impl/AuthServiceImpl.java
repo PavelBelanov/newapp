@@ -1,19 +1,37 @@
 package ru.belanov.newapp.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import ru.belanov.newapp.domain.user.User;
 import ru.belanov.newapp.service.AuthService;
+import ru.belanov.newapp.service.UserService;
 import ru.belanov.newapp.web.dto.auth.JwtRequest;
 import ru.belanov.newapp.web.dto.auth.JwtResponse;
+import ru.belanov.newapp.web.security.JwtTokenProvider;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
     @Override
     public JwtResponse login(JwtRequest loginRequest) {
-        return null;
+       JwtResponse jwtResponse = new JwtResponse();
+       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
+       User user = userService.getByUserName(loginRequest.getUsername());
+       jwtResponse.setId(user.getId());
+       jwtResponse.setUsername(user.getUsername());
+       jwtResponse.setAccessToken(jwtTokenProvider.createAccessToken(user.getId(), user.getUsername(), user.getRoles()));
+       jwtResponse.setRefreshToken(jwtTokenProvider.createRefreshToken(user.getId(), user.getUsername()));
+       return jwtResponse;
     }
 
     @Override
     public JwtResponse refresh(String refreshToken) {
-        return null;
+        return jwtTokenProvider.refreshUserTokens(refreshToken);
     }
 }

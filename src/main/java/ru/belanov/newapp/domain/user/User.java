@@ -1,6 +1,5 @@
 package ru.belanov.newapp.domain.user;
 
-import lombok.Builder;
 import lombok.Data;
 import ru.belanov.newapp.domain.task.Task;
 
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@Builder
 public class User {
 
     private Long id;
