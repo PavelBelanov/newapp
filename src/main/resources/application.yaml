@@ -6,25 +6,35 @@ spring:
     url: jdbc:postgresql://localhost:5432/tasklist?currentSchema=tasklist
   sql:
    init:
-     mode: always
+     mode: never
      continue-on-error: false
-#     data-locations: classpath:demo_data.sql
-  jpa:
-    defer-datasource-initialization: false
-    show-sql: true
-    open-in-view: false
-#    hibernate:
-#      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-        default_batch_fetch_size: 20
-        jdbc:
-          batch_size: 20
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yaml
+    enabled: true
+    default-schema: tasklist
+#    data-locations: classpath:demo_data.sql
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+#  jpa:
+#    defer-datasource-initialization: false
+#    show-sql: true
+#    open-in-view: false
+##    hibernate:
+##      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        default_batch_fetch_size: 20
+#        jdbc:
+#          batch_size: 20
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
 security:
   jwt:
     secret: b3BpcG9pcHdlcnd0dWlvdXBvcG9paUpIS0pIR0pIRkpG
     access: 3600000
     refresh: 2592000000
 #    https://www.base64encode.net
+springdoc:
+  override-with-generic-response: false

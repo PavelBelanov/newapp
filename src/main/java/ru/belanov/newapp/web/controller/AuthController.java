@@ -1,5 +1,6 @@
 package ru.belanov.newapp.web.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,7 @@ import ru.belanov.newapp.web.dto.auth.JwtResponse;
 import ru.belanov.newapp.web.dto.user.UserDto;
 import ru.belanov.newapp.web.dto.validation.OnCreate;
 import ru.belanov.newapp.web.mappers.UserMapper;
-
+@Tag(name = "Auth Controller", description = "Auth API")
 @Validated
 @RestController
 @RequestMapping("/api/v1/auth")

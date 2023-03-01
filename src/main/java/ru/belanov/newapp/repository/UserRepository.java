@@ -1,10 +1,12 @@
 package ru.belanov.newapp.repository;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import ru.belanov.newapp.domain.user.Role;
 import ru.belanov.newapp.domain.user.User;
 
 import java.util.Optional;
-
+@Mapper
 public interface UserRepository {
 
     Optional<User> findById(Long id);
@@ -15,9 +17,9 @@ public interface UserRepository {
 
     void create(User user);
 
-    void insertUserRole(Long id, Role role);
+    void insertUserRole(@Param("id") Long id,@Param("role") Role role);
 
-    boolean isTaskOwner(Long userId, Long taskId);
+    boolean isTaskOwner(@Param("userId") Long userId,@Param("taskId") Long taskId);
 
     void delete(Long id);
 }
