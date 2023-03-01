@@ -3,6 +3,7 @@ package ru.belanov.newapp.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.belanov.newapp.domain.task.Task;
@@ -33,6 +34,7 @@ public class UserController {
 
     @PutMapping
     @Operation(summary = "Update user")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#dto.id)")
     public UserDto updateUser(@Validated(OnUpdate.class)@RequestBody UserDto dto){
         User user = userMapper.toEntity(dto);
         User updatedUser = userService.update(user);
@@ -41,6 +43,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get UserDTO by id")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public UserDto getUserById(@PathVariable Long id){
         User user = userService.getById(id);
         return userMapper.toDto(user);
@@ -48,18 +51,21 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete user")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public void deleteUserById(@PathVariable Long id){
         userService.delete(id);
     }
 
     @GetMapping("/{id}/tasks")
     @Operation(summary = "Get all user tasks")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public List<TaskDto> getTasksByUserId(@PathVariable Long id){
         List<Task> tasks = taskService.getAllByUserId(id);
         return taskMapper.toDto(tasks);
     }
     @PostMapping("/{id}/tasks")
     @Operation(summary = "Add task to user")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public TaskDto createTask(@PathVariable Long id, @Validated(OnCreate.class) @RequestBody TaskDto dto){
         Task task = taskMapper.toEntity(dto);
         Task createdTask = taskService.create(task,id);
